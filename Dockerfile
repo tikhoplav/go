@@ -23,7 +23,7 @@ RUN apk add --no-cache \
   && cp -R /tmp/include /usr/local \
   && go get -u github.com/cespare/reflex \
   && go get -u github.com/spf13/cobra/cobra \
-  && go get -u google.golang.org/protobuf/cmd/protoc-gen-go \
+  && go get -u google.golang.org/protobuf/cmd/protoc-gen-go
   
 EXPOSE 80
 
