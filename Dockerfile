@@ -17,8 +17,7 @@ RUN apk add --no-cache \
     git \
     gcc \
     musl-dev \  
-  && curl -L -o /tmp/protobuf.zip https://github.com/protocolbuffers/protobuf/
-releases/download/v3.14.0/protoc-3.14.0-linux-x86_64.zip \
+  && curl -L -o /tmp/protobuf.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/protoc-3.14.0-linux-x86_64.zip \
   && unzip /tmp/protobuf.zip -d /tmp \
   && cp /tmp/bin/protoc /bin \
   && cp -R /tmp/include /usr/local \
