@@ -11,16 +11,30 @@ FROM golang:1.15-alpine
 # make process of modular dev easier.
 WORKDIR /src
 
+# protobuf version
+ENV PROTO_VER 3.14.0
+
 RUN apk add --no-cache \
-    curl \
-    unzip \
     git \
     gcc \
-    musl-dev \  
-  && curl -L -o /tmp/protobuf.zip https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/protoc-3.14.0-linux-x86_64.zip \
-  && unzip /tmp/protobuf.zip -d /tmp \
-  && cp /tmp/bin/protoc /bin \
-  && cp -R /tmp/include /usr/local \
+    musl-dev \
+    build-base \
+    autoconf \
+    automake \
+    libtool \
+  && wget -qO- https://github.com/protocolbuffers/protobuf/releases/download/v$PROTO_VER/protobuf-cpp-$PROTO_VER.tar.gz | tar -xvzf - -C /tmp \
+  && cd /tmp/protobuf-$PROTO_VER \
+  && ./autogen.sh \
+  && ./configure \
+  && make -j 3 \
+  && make check \
+  && make install \
+  && apk del \
+    build-base \
+    autoconf \
+    automake \
+    libtool \
+  && cd /src && rm -rf /tmp/* \
   && go get -u github.com/cespare/reflex \
   && go get -u github.com/spf13/cobra/cobra \
   && go get -u google.golang.org/protobuf/cmd/protoc-gen-go
