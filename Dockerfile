@@ -1,7 +1,7 @@
 # This image is used for golang app development and building.
 # Included:
 # - Builiding deps;
-# - Protoc;
+# - Protoc & gRPC;
 # - Cobra;
 # - Reflex;
 # - Git;
@@ -25,14 +25,16 @@ RUN wget -qO /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sge
     git \
     gcc \
     musl-dev \
+  && rm /etc/apk/keys/sgerrand.rsa.pub \
   && wget -qO- https://github.com/protocolbuffers/protobuf/releases/download/v$PROTOC_VER/protoc-$PROTOC_VER-linux-x86_64.zip | busybox unzip -d /tmp - \
   && chmod -R 777 /tmp \
   && cp /tmp/bin/protoc /usr/local/bin \
   && cp -r /tmp/include /usr/local/include \
-  && rm /etc/apk/keys/sgerrand.rsa.pub \
-  && go get -u github.com/cespare/reflex \
-  && go get -u github.com/spf13/cobra/cobra \
-  && go get -u google.golang.org/protobuf/cmd/protoc-gen-go \
+  && go get -u \
+    github.com/cespare/reflex \
+    github.com/spf13/cobra/cobra \
+    google.golang.org/protobuf/cmd/protoc-gen-go \
+    google.golang.org/grpc/cmd/protoc-gen-go-grpc \
   && rm -rf /tmp/*
   
 EXPOSE 80
